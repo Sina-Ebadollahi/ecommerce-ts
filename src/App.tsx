@@ -1,24 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+// routing
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+// Pages
+import Home from './Pages/Home/Home';
+// Components
+import Navbar from './Components/Navbar/Navbar';
+// const OffDeal = () => {
+//   return(
+//     <div style={{backgroundColor: 'green', minHeight: '5vh', fontSize: '1rem'}}>
+//       <h2>
+//         Super Deal! Free Shipping on Orders Over $50
+//       </h2>
+//     </div>
+//   )
+// }
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        {/* <OffDeal /> */}
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
