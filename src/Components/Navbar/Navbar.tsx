@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { Reducer, useState } from 'react';
 import styled from 'styled-components'
 import { SearchOutlined } from '@material-ui/icons'
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 const NavContainer = styled.div`
   width: 100vw;
   min-height: 15vh;
+  box-shadow: 0 1px 2px black;
 `;
 // Container with margin
 const NavWrapper = styled.div`
@@ -59,8 +62,10 @@ flex: 1 1 20rem;
 const Logo = styled.h1`
   font-size: 3.5rem;
   font-family: 'Dancing Script', cursive;
+  color: black !important;
   /* display: inline; */
   text-align: center;
+  cursor: pointer;
 `;
 // Navbar Right( Login Link + Signup Link + checkout badge)
 const RightContainer = styled.div`
@@ -75,7 +80,6 @@ justify-self: flex-end;
   display: flex;
   justify-content: space-around;
   align-items: center;
-
 `
 const BasketContainer = styled.div`
 width: 2rem;
@@ -113,29 +117,52 @@ function checkLang(currentLang: string | undefined, engText: string, faText: str
   }
 }
 export default function Navbar(): JSX.Element {
-  const [langState, setLangState] = useState<string | undefined>('english');
-  const [cartCount, setCartCount] = useState<number | null>(null)
-  console.log(langState);
+  interface x {
+    themeReducer: any,
+   authenticationReducer: any,
+   cartReducer: any,
+   languageReducer: any,
+  }
+  const currentLang = useSelector((state: x) => state.languageReducer);
+  const cartCount = useSelector((state: x) => state.cartReducer);
+  const dispatch = useDispatch();
+  // const { 
+  //   cartCount,
+  //   currentLang,
+  //   themeStatus,
+  //   setCurrentLang,
+  //   setThemeStatus,
+  //   setCartCount,
+  //   dispatch,} = useGlobalContext();
+  // const [langState, setLangState] = useState<string | undefined>('english');
+  // const {} = useReduxReducers();
+  const [searchValue, setSearchValue] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const localHref = useLocation();
+  
+  function handleSearchSubmit(searchValue: string){
+    // search
+  }
   return (
     <NavContainer>
       <NavWrapper>
         <LeftContainer>
-          <Select onChange={(value) => setLangState(value?.value)} defaultValue={{value: 'english', label: 'EN'}} backspaceRemovesValue blurInputOnSelect options={langOptions} />
+          <Select onChange={(value) => dispatch({type: 'CHANGE_LANG', payload: value.value})} defaultValue={{value: 'english', label: 'EN'}} backspaceRemovesValue blurInputOnSelect options={langOptions} />
           {/* <Language>EN</Language> */}
           <SearchContainer>
-            <SearchInput style={{outline: 'none',textAlign: langState === 'english' ? 'left' : 'right'}} placeholder={checkLang(langState, 'Search...', '...جستجو')} />
+            <SearchInput onChange={e => setSearchValue(e.target.value)} onKeyDown={(e) => {if(e.key === 'Enter'){handleSearchSubmit(searchValue)}}} style={{outline: 'none',textAlign: currentLang === 'english' ? 'left' : 'right'}} placeholder={checkLang(currentLang, 'Search...', '...جستجو')} />
             <SearchOutlined />
           </SearchContainer>
         </LeftContainer>
-        <CenterContainer><Logo>{checkLang(langState, 'eCommerce', 'فروشگاه')}</Logo></CenterContainer>
+        <CenterContainer><Link to={'/'}><Logo>{checkLang(currentLang, 'eCommerce', 'فروشگاه')}</Logo></Link></CenterContainer>
         <RightContainer>
-          <RightUL>
-            <li><Link to="/Signup">{checkLang(langState, 'REGISTER', 'ایجاد حساب')}</Link></li>
-            <li><Link to="/Login">{checkLang(langState, 'SIGN IN', 'ورود')}</Link></li>
+          <RightUL >
+            {!localHref.pathname.endsWith('Signup') && (<li><Link style={{color: 'black'}} to="/Signup">{checkLang(currentLang, 'REGISTER', 'ایجاد حساب')}</Link></li>)}
+            {!localHref.pathname.endsWith('Login') && (<li><Link style={{color: 'black'}} to="/Login">{checkLang(currentLang, 'SIGN IN', 'ورود')}</Link></li>)}
             <li>
               <BasketContainer>
-                {cartCount && <CartCount>{cartCount}</CartCount>}
-                <Link to="/Cart"><ShoppingCartIcon  /></Link>
+                {/* {cartCount && <CartCount>{cartCount}</CartCount>} */}
+                <Link to="/Cart"><ShoppingCartIcon style={{color: 'black'}} /></Link>
               </BasketContainer>
             </li>
           </RightUL>
