@@ -8,6 +8,7 @@ import Home from './Pages/Home/Home';
 import Navbar from './Components/Navbar/Navbar';
 import Announcement from './Components/Announcement/Announcement';
 import { useDispatch } from 'react-redux';
+import Cart from './Pages/Cart';
 
 function App() {
   const dispatch = useDispatch()
@@ -17,8 +18,6 @@ function App() {
       if(f.ok){
         let { ip }: any = await f.json();
         dispatch({type: 'ADD_IP', payload: ip});
-        console.log(ip);
-        
       }
     })();
   },[])
@@ -31,7 +30,7 @@ function App() {
           <Route path="/" element={<Home />} />
           {/* <Route path="/Login" element={} /> */}
           {/* <Route path='/Signup'  element={}/> */}
-          {/* <Route path='Cart' element={}/> */}
+          <Route path='/Cart' element={<Cart />}/>
           {/* <Route path='/Product/:id' element={}/> */}
         </Routes>
       </Router>

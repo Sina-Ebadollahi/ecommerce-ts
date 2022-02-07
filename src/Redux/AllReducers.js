@@ -39,15 +39,26 @@ const authenticationReducer = (state = authInit, action) => {
 };
 // Cart Initialize
 const cartInit = {
-  cartCount: null,
+  cartCount: 0,
+  cartProducts: [],
 };
 // Cart Reducer
 const cartReducer = (state = cartInit, action) => {
   switch (action.type) {
     case "INCREMENT_CART":
-      return { cartCount: state.cartCount + 1 };
+      return {
+        cartProducts: [...state.cartProducts, action.payload],
+        cartCount: state.cartCount + 1,
+      };
     case "DECREMENT_CART":
-      return { cartCount: state.cartCount - 1 };
+      return {
+        cartProducts: state.cartProducts.filter((each) => {
+          if (each != action.payload) {
+            return each;
+          }
+        }),
+        cartCount: state.cartCount - 1,
+      };
     default:
       return state;
   }
@@ -68,6 +79,7 @@ const rootReducer = combineReducers({
   cartReducer,
   languageReducer,
 });
+
 // root reducer
 export const mainReducer = createStore(
   rootReducer,

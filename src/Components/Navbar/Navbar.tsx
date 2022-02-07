@@ -8,6 +8,7 @@ import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const NavContainer = styled.div`
   width: 100vw;
+  max-width: 100vw;
   min-height: 15vh;
   box-shadow: 0 1px 2px black;
 `;
@@ -124,7 +125,7 @@ export default function Navbar(): JSX.Element {
    languageReducer: any,
   }
   const currentLang = useSelector((state: x) => state.languageReducer);
-  const cartCount = useSelector((state: x) => state.cartReducer);
+  const { cartCount } = useSelector((state: x) => state.cartReducer);
   const dispatch = useDispatch();
   // const { 
   //   cartCount,
@@ -151,17 +152,17 @@ export default function Navbar(): JSX.Element {
           {/* <Language>EN</Language> */}
           <SearchContainer>
             <SearchInput onChange={e => setSearchValue(e.target.value)} onKeyDown={(e) => {if(e.key === 'Enter'){handleSearchSubmit(searchValue)}}} style={{outline: 'none',textAlign: currentLang === 'english' ? 'left' : 'right'}} placeholder={checkLang(currentLang, 'Search...', '...جستجو')} />
-            <SearchOutlined />
+            <SearchOutlined style={{cursor: 'pointer'}} />
           </SearchContainer>
         </LeftContainer>
         <CenterContainer><Link to={'/'}><Logo>{checkLang(currentLang, 'eCommerce', 'فروشگاه')}</Logo></Link></CenterContainer>
         <RightContainer>
           <RightUL >
-            {!localHref.pathname.endsWith('Signup') && (<li><Link style={{color: 'black'}} to="/Signup">{checkLang(currentLang, 'REGISTER', 'ایجاد حساب')}</Link></li>)}
-            {!localHref.pathname.endsWith('Login') && (<li><Link style={{color: 'black'}} to="/Login">{checkLang(currentLang, 'SIGN IN', 'ورود')}</Link></li>)}
+            {!localHref.pathname.endsWith('Signup') && (<li><Link style={{color: 'black', fontSize: '1.3rem', fontWeight: 'bold'}} to="/Signup">{checkLang(currentLang, 'REGISTER', 'ایجاد حساب')}</Link></li>)}
+            {!localHref.pathname.endsWith('Login') && (<li><Link style={{color: 'black', fontSize: '1.3rem', fontWeight: 'bold'}} to="/Login">{checkLang(currentLang, 'SIGN IN', 'ورود')}</Link></li>)}
             <li>
               <BasketContainer>
-                {/* {cartCount && <CartCount>{cartCount}</CartCount>} */}
+                {cartCount != 0 && <CartCount>{cartCount}</CartCount>}
                 <Link to="/Cart"><ShoppingCartIcon style={{color: 'black'}} /></Link>
               </BasketContainer>
             </li>
