@@ -12,7 +12,12 @@ export default function useCart() {
     dispatch({type: 'INCREMENT_CART', payload: productID});
     navigate(`/Cart`);
   }
+  const handleCartDecrement = (productID: number) => {
+    dispatch({type: 'DECREMENT_CART', payload: productID});
+
+  }
   return{
       handleCartIncrement,
+      handleCartDecrement,
   }
 }

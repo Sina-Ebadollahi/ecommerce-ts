@@ -9,6 +9,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Announcement from './Components/Announcement/Announcement';
 import { useDispatch } from 'react-redux';
 import Cart from './Pages/Cart';
+import Signup from './Pages/Signup';
 
 function App() {
   const dispatch = useDispatch()
@@ -29,7 +30,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           {/* <Route path="/Login" element={} /> */}
-          {/* <Route path='/Signup'  element={}/> */}
+          <Route path='/Signup'  element={<Signup />}/>
           <Route path='/Cart' element={<Cart />}/>
           {/* <Route path='/Product/:id' element={}/> */}
         </Routes>
