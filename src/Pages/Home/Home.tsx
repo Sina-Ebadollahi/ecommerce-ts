@@ -1,11 +1,12 @@
 
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 // components
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@mui/icons-material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import SendIcon from '@mui/icons-material/Send';
 //styled component
 import styled from 'styled-components';
 // images
@@ -25,6 +26,7 @@ import ClothesImage8 from '../../assets/image/clothes8.jfif'
 import { useSelector } from 'react-redux';
 import useCart from '../../hooks/useCart';
 import Rotate from 'react-reveal/Rotate';
+import { integerPropType } from '@mui/utils';
 const SlideSection = styled.section`
   /* margin-top: 20vh; */
   min-height: 80vh;
@@ -95,6 +97,7 @@ padding: 4rem 0;
   align-items: center;
 `
 const InfoHeader = styled.h1`
+margin-left: 3rem;
 margin-bottom: 4rem;
   font-size: 4rem;
   font-weight: 700;
@@ -138,6 +141,10 @@ margin: auto;
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 2rem;
+  @media only screen and (max-width: 790px) {
+    grid-template-columns: 1fr;   
+  }
+
 `
 const EachProductIntro = styled.div`
 overflow: hidden;
@@ -184,6 +191,9 @@ const SaleProductContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4,1fr);
   gap: 1rem;
+  @media only screen and (max-width: 790px){
+    grid-template-columns: repeat(2, 1fr)
+  }
 `
 const SaleProductEach = styled.div`
 position: relative;
@@ -209,6 +219,15 @@ position: absolute;
   height: 100%;
   opacity: 0.7;
   background-color: #d4d0d0;
+  animation: hover 1s forwards ease-in-out;
+  @keyframes hover {
+    from{
+      opacity: 0;
+    }
+    to{
+      opacity: 0.7;
+    }
+  }
 `
 const clothesImages = [
   {image: ClothesImage1, id: 1},
@@ -222,16 +241,16 @@ const clothesImages = [
 ]
 const EachProductSaleFunction = ({ prop, hoverProp, setHoverProp }: {prop: {image: any, id: number}, hoverProp: {isHovered: boolean, isHoveredId: number}, setHoverProp: React.Dispatch<React.SetStateAction<{isHovered: boolean;isHoveredId: number;}>> }): JSX.Element => {
   let iconStyle: React.CSSProperties = {
-    backgroundColor: 'black', width: '4rem',height: '4rem', borderRadius: '50%',margin: '2rem', color: 'white'
+    backgroundColor: 'black', width: window.innerWidth < parseInt('790px') ? '2rem': '4rem',height: window.innerWidth < parseInt('790px') ? '2rem': '4rem', borderRadius: '50%',margin: '2rem', color: 'white'
   }
   const { handleCartIncrement } = useCart();
   return(
     <SaleProductEach onMouseEnter={(e) => setHoverProp({isHovered: true, isHoveredId: prop.id})} onMouseLeave={(e) => setHoverProp({isHovered: false, isHoveredId: 0})}>
       {hoverProp.isHovered && hoverProp.isHoveredId === prop.id && (
         <SaleProductHoverDiv>
-          <FavoriteBorderIcon style={iconStyle} />
-          <AddShoppingCartIcon onClick={() => handleCartIncrement(313131)} style={iconStyle}/>
-          <ZoomInIcon style={iconStyle}/>
+          <FavoriteBorderIcon  style={iconStyle}  onMouseEnter={(e) => e.currentTarget.style.padding = '0.5rem'} onMouseLeave={(e) => e.currentTarget.style.padding = '0'} />
+          <AddShoppingCartIcon onClick={() => handleCartIncrement(313131)} style={iconStyle} onMouseEnter={(e) => e.currentTarget.style.padding = '0.5rem'} onMouseLeave={(e) => e.currentTarget.style.padding = '0'}/>
+          <ZoomInIcon style={iconStyle} onMouseEnter={(e) => e.currentTarget.style.padding = '0.5rem'} onMouseLeave={(e) => e.currentTarget.style.padding = '0'}/>
         </SaleProductHoverDiv>
       )}
       <SaleProductImage src={prop.image} />
@@ -254,6 +273,87 @@ const SaleProductSection = (props: any): JSX.Element => {
     </SaleProduct>
   )
 }
+const NewsLetterSection = styled.section`
+  min-height: 60vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+const NewsLetterHeader = styled.h1`
+margin-bottom: 2rem;
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  color: #8f3c3c;
+`
+const NewsLetterParagraph = styled.p`
+margin: 2rem 0;
+font-weight: 600;
+  font-size: 1.3rem;
+  text-align: center;
+  color: black;
+`
+const InputForm = styled.form`
+margin-top: 2rem;
+  width: 80%;
+  min-height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+`
+const NewsLetterInput = styled.input`
+  width: 70%;
+  min-height: 100%;
+  border: 2px solid black;
+  font-size: 2rem;  
+text-align: center;
+`
+const NewsLetterSendIconContainer = styled.div`
+/* width: 40%; */
+height: 100%;
+padding: 0.6rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #7065b3;
+  border: 2px solid #7065b3;
+  cursor: pointer;
+`
+// const NewsLetterButton = styled.button`
+// /* width: 60%; */
+// min-width: 3rem;
+// height: 100%;
+//   all: unset;
+//   /* padding: 0 2rem; */
+//   background-color: #7065b3;
+//   color: white;
+//   font-size: 2rem;
+//   border: 2px solid #7065b3;
+//   cursor: pointer;
+// `
+const NewsLetter = ({currentLang}:{currentLang: string}):JSX.Element => {
+  const [newsLetterEmail, setNewsLetterEmail] = useState<string | null | undefined>();
+  const inputFormRef = useRef<HTMLFormElement | null>(null);
+  function handleSubmitEmail(e: React.MouseEvent<HTMLDivElement, MouseEvent>){
+    inputFormRef.current.submit();
+    
+  }
+  return(
+    <NewsLetterSection>
+      <NewsLetterHeader>{checkLang(currentLang, 'Subscribe to our NewsLetter', 'عضو خبررسان ما شوید.')}</NewsLetterHeader>
+      <NewsLetterParagraph>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Libero esse itaque totam? Vitae, error excepturi.</NewsLetterParagraph>
+      <InputForm ref={inputFormRef}>
+        <NewsLetterInput type='email' placeholder={currentLang === 'english' ? 'Enter Your Email' : 'ایمیل خود را وارد نمایید'} onChange={(e) => setNewsLetterEmail(e.target.value)} />
+        <NewsLetterSendIconContainer onClick={(e) => handleSubmitEmail(e)}>
+          <SendIcon style={{color: 'white'}} />
+        </NewsLetterSendIconContainer>
+      </InputForm>
+    </NewsLetterSection>
+  )
+}
+
 function checkLang(currentLang: string | undefined, engText: string, faText: string): string | undefined{
   switch(currentLang){
     case 'english':
@@ -359,7 +459,7 @@ export default function Home() {
       </ArrowDiv>
     </SlideSection>
     <CategoriesSection>
-        <Rotate bottom left>
+        {/* <Rotate bottom left> */}
       <ProductIntro>
 
         {data.map((each) => {
@@ -373,11 +473,11 @@ export default function Home() {
           }
         })}
       </ProductIntro>
-        </Rotate>
+        {/* </Rotate> */}
     </CategoriesSection>
-    <SaleProductSection>
-
-    </SaleProductSection>
+    <SaleProductSection />
+     <NewsLetter currentLang={currentLang} /> 
+    
   </>
   );
 }

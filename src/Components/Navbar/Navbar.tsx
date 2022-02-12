@@ -7,10 +7,12 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const NavContainer = styled.div`
-  width: 100vw;
+  /* width: 100vw; */
   max-width: 100vw;
   min-height: 15vh;
   box-shadow: 0 1px 2px black;
+  /* position: fixed;
+  z-index: 10; */
 `;
 // Container with margin
 const NavWrapper = styled.div`

@@ -10,6 +10,7 @@ import Announcement from './Components/Announcement/Announcement';
 import { useDispatch } from 'react-redux';
 import Cart from './Pages/Cart';
 import Signup from './Pages/Signup';
+import Footer from './Components/Footer/Footer';
 
 function App() {
   const dispatch = useDispatch()
@@ -34,6 +35,7 @@ function App() {
           <Route path='/Cart' element={<Cart />}/>
           {/* <Route path='/Product/:id' element={}/> */}
         </Routes>
+        <Footer />
       </Router>
     </div>
   );
