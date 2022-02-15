@@ -103,8 +103,8 @@ const SignUpInputs = ({ Icon, text, color, type, passwordProp }:Signupinp):JSX.E
     return(
     <BaseContainer baseColor={color}>
       <BaseInput required maxLength={16} type={isPasswordVisible === true ? 'text' : 'password'} placeholder={text} />
-      {!isPasswordVisible && <IsNotVisibleIcon onClick={() => setIsPasswordVisible(true)} style={{width: '2rem', height: '2rem'}} />}
-      {isPasswordVisible && <IsVisibleIcon onClick={() => setIsPasswordVisible(false)} style={{width: '2rem', height: '2rem'}} />}
+      {!isPasswordVisible && <IsNotVisibleIcon onClick={() => setIsPasswordVisible(true)} style={{width: '2rem', height: '2rem',cursor: 'pointer'}} />}
+      {isPasswordVisible && <IsVisibleIcon onClick={() => setIsPasswordVisible(false)} style={{width: '2rem', height: '2rem', cursor: 'pointer'}} />}
     </BaseContainer>
     )
   }else{
@@ -134,11 +134,12 @@ function checkLang(currentLang: string | undefined, engText: string, faText: str
   }
 export default function Signup() {
     const currentLang: string = useSelector((states: reducers) => states.languageReducer);
-    const [signupData, setSignupData] = useState<{email: string, password: string, userName: string}>();
+    const [signupData, setSignupData] = useState<{email: string, password: string, userName: string, passwordConfirm: string}>({email: null, password: null, userName: null, passwordConfirm: null});
     const formRef = useRef<HTMLFormElement | null>(null)
     const handleSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // signup action
+
       
     }
     const hanldeSubmitClick = () => {
@@ -149,18 +150,6 @@ export default function Signup() {
       <SignupContainer>
         <FormWrapper>
           <Form onSubmit={(e) => handleSignupSubmit(e)} ref={formRef}>
-            {/* <PublicLabel>
-              <PublicSpanForLabel>{checkLang(currentLang, 'Email: ', 'ایمیل : ')}</PublicSpanForLabel>
-              <PublicInputForm type='email' onChange={(e) => setSignupData({...signupData, email: e.target.value})} />
-            </PublicLabel>
-            <PublicLabel>
-            <PublicSpanForLabel>{checkLang(currentLang, 'UserName : ', 'نام کاربری : ')}</PublicSpanForLabel>
-              <PublicInputForm type='text' onChange={(e) => setSignupData({...signupData, userName: e.target.value})} />
-            </PublicLabel>
-            <PublicLabel>
-            <PublicSpanForLabel>{checkLang(currentLang, 'Password : ', 'رمزعبور : ')}</PublicSpanForLabel>
-              <PublicInputForm type='password' onChange={(e) => setSignupData({...signupData, password: e.target.value})} />
-            </PublicLabel> */}
             <SignUpInputs passwordProp={{isPasswordInput: false, IsNotVisibleIcon: null, IsVisibleIcon: null}} type='email' Icon={EmailIcon} color={'red'} text="Email" key='1' />
             <SignUpInputs passwordProp={{isPasswordInput: false, IsNotVisibleIcon: null, IsVisibleIcon: null}} type='text' Icon={PersonIcon} color={'red'} text="Username" key='2' />
             <SignUpInputs passwordProp={{isPasswordInput: true, IsNotVisibleIcon: VisibilityIcon, IsVisibleIcon: VisibilityOffIcon}} type='password' Icon={VisibilityIcon} color={'red'} text="Password" key='3' />

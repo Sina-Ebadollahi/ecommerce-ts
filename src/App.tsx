@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import Cart from './Pages/Cart';
 import Signup from './Pages/Signup';
 import Footer from './Components/Footer/Footer';
+import Login from './Pages/Login';
 
 function App() {
   const dispatch = useDispatch()
@@ -30,7 +31,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/Login" element={} /> */}
+          <Route path="/Login" element={<Login />} />
           <Route path='/Signup'  element={<Signup />}/>
           <Route path='/Cart' element={<Cart />}/>
           {/* <Route path='/Product/:id' element={}/> */}
