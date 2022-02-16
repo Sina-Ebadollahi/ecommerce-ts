@@ -127,8 +127,8 @@ const CenterSideUnorderedList = ({ links, currentLang }: { links: {link: string,
 
     return(
         <CenterSideUl>
-            {links.map((each) => (
-                <CenterSideEachList>
+            {links.map((each, index) => (
+                <CenterSideEachList key={index}>
                     <Link target='_blank' to={each.link}>{checkLang(currentLang, each.labelEn, each.labelFa)}</Link>
                 </CenterSideEachList>
             ))}

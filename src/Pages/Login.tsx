@@ -1,5 +1,5 @@
 // hooks
-import { useState } from "react";
+import { useRef, useState } from "react";
 // styled components
 import styled from "styled-components";
 // Icons
@@ -91,11 +91,13 @@ type InputContainerTypes = {
 }
 const InputContainer = ({Icon, text, passwordProp, setInputData, inputData }: InputContainerTypes):JSX.Element =>{
   const [isVisiblePass, setIsVisiblePass] = useState(false);
+  const inpRef = useRef<HTMLInputElement | null>(null);
+  const inpRef2 = useRef<HTMLInputElement | null>(null);
   if(text === 'Password'){
     let { NotVisibleIcon, VisibleIcon } = passwordProp;
     return(
-      <InputWrapper>
-        <Input type={isVisiblePass ? 'text' : 'password'} onChange={(e) => setInputData({pass: e.target.value, userNameOrEmail: inputData.userNameOrEmail})} placeholder={text} />
+      <InputWrapper onClick={() => inpRef.current.focus()} onFocus={() => inpRef.current.focus()}>
+        <Input ref={inpRef} type={isVisiblePass ? 'text' : 'password'} onChange={(e) => setInputData({pass: e.target.value, userNameOrEmail: inputData.userNameOrEmail})} placeholder={text} />
         {/* <Icon style={{width: '2rem', height: '2rem'}} /> */}
         {!isVisiblePass && <VisibleIcon style={{width: '2rem', height: '2rem', cursor: 'pointer'}} onClick={() => setIsVisiblePass(true)} />}
         {isVisiblePass && <NotVisibleIcon style={{width: '2rem', height: '2rem', cursor: 'pointer'}} onClick={() => setIsVisiblePass(false)} />}
@@ -103,8 +105,8 @@ const InputContainer = ({Icon, text, passwordProp, setInputData, inputData }: In
     )
   }else if(text === 'Username or Email'){
     return(
-      <InputWrapper>
-        <Input onChange={(e) => setInputData({userNameOrEmail: e.target.value, pass: inputData.pass})} placeholder={text} />
+      <InputWrapper onClick={() => inpRef2.current.focus()} onFocus={() => inpRef2.current.focus()}>
+        <Input ref={inpRef2} onChange={(e) => setInputData({userNameOrEmail: e.target.value, pass: inputData.pass})} placeholder={text} />
         <Icon style={{width: '2rem', height: '2rem'}} />
       </InputWrapper>
     )
@@ -139,7 +141,7 @@ export default function Login() {
           <SubmitButton>{checkLang(currentLang, 'Submit', 'تایید')}</SubmitButton>
           <ForgetContainer>
             <ForgetHeader cl={currentLang}><Link to='/'>{checkLang(currentLang, 'Forgot Password?', 'فراموشی رمز عبور؟')}</Link></ForgetHeader>
-            <ForgetHeader cl={currentLang}><Link to='/'>{checkLang(currentLang, 'Create account', 'ایجاد حساب')}</Link></ForgetHeader>
+            <ForgetHeader cl={currentLang}><Link to='/Signup'>{checkLang(currentLang, 'Create account', 'ایجاد حساب')}</Link></ForgetHeader>
           </ForgetContainer>
         </LoginContainer>
     </LoginSection>

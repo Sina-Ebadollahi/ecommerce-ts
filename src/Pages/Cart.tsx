@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import useCart from '../hooks/useCart';
 import Select from 'react-select'
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 interface reducersList{
     themeReducer: any,
     authenticationReducer: any,
@@ -40,6 +41,9 @@ const CartSides = styled.div`
     width:100%;
     height: 100%;
     display: ${(prop: side) => prop.side === 'right' && 'flex'};
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `
 const SubmitButton = styled.button`
     height: 10%;
@@ -127,16 +131,22 @@ const ProductList = ({ cartCount, cartProducts, currentLang, handleCartDecrement
     )
 }
 const PaymentSides = styled.div`
-    width: 100%;
-    height: 50%;
-
+    /* width: 100%;
+    height: 50%; */
+    flex: 1;
 `
 // Payment Side 1
 const PaymentSideHeader = styled.h1`
     font-size: 3rem;
     color: #3d3838;
+    justify-self: center;
 `
-
+const CustomDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+`
 // Payment Side 2
 const OffCouponLabel = styled.label`
     
@@ -147,24 +157,32 @@ const OffCouponSpan = styled.span`
 const OffCouponInput = styled.input`
 
 `
-const PaymentList = ():JSX.Element => {
+const PaymentList = ({currentLang}: {currentLang: string}):JSX.Element => {
     const [paymentMethod, setPaymentMethod] = useState<string | undefined>();
     const [couponArea, setCouponArea] = useState<string | number | undefined>();
     return(
         <>
         <PaymentSides>
-
+            <PaymentSideHeader>{checkLang(currentLang, 'Payment', 'پرداخت')}</PaymentSideHeader>
         </PaymentSides>
         <PaymentSides>
+            <CustomDiv style={{width: '100%', padding: '0 4rem',justifySelf: 'flex-start'}}>
             <Select onChange={(newValue) => setPaymentMethod(newValue.value)} defaultValue={{value: 'paypal', label: 'paypal'}} options={[
                 {value: 'paypal', label: 'paypal'},
                 {value: 'skrill', label: 'skrill'},
                 {value: 'bitcoin', label: 'bitcoin'},
             ]} />
+            <CustomDiv style={{flexDirection: 'row'}}>
             <OffCouponLabel>
                 <OffCouponSpan>Coupon : </OffCouponSpan>
                 <OffCouponInput onChange={(e) => setCouponArea(e.target.value)} />
             </OffCouponLabel>
+            <LocalOfferIcon style={{width: '2rem', height: '2rem'}} />
+            </CustomDiv>
+            </CustomDiv>
+        </PaymentSides>
+        <PaymentSides style={{justifySelf: 'flex-start'}}>
+            {`tota price`}
         </PaymentSides>
         </>
     )
@@ -192,7 +210,7 @@ export default function Cart(): JSX.Element {
                 <ProductList cartCount={cartCount} cartProducts={cartProducts} currentLang={currentLang} handleCartDecrement={handleCartDecrement}/>
             </CartSides>
             <CartSides side='right'>
-                <PaymentList />
+                <PaymentList currentLang={currentLang} />
             </CartSides>
             </SideCartWrapper>
             <SubmitButton>
